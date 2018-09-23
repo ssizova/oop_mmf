@@ -36,7 +36,8 @@ void Print_map (std::map<std::string, int32_t> my_map) {
 }
 
 
-std::vector<std::string> Get_lines (std::ifstream input_file) { 
+std::vector<std::string> Get_lines (std::string input) { 
+	std::ifstream input_file (input);
 	std::vector<std::string> lines;
     std::string line;
     while (std::getline(input_file, line)) {
@@ -61,20 +62,20 @@ std::map<std::string, int32_t> Words_classification (std::map<std::string, int32
 }
 
 
-int32_t Words_counter (std::map<std::string> my_map) {
+int32_t Words_counter (std::map<std::string, int32_t> my_map) {
 	int32_t number_of_words = 0;
-	for (std::map<char,int>::iterator it=my_map.begin(); it!=my_map.end(); ++it) {
+	for (std::map<std::string, int32_t>::iterator it=my_map.begin(); it!=my_map.end(); ++it) {
     	number_of_words += it->second;
 	}
     return number_of_words;
 }
 
 
-std::vector<double> Frequency_percentage (const std::map <std::string> &my_map) { 
+std::vector<double> Frequency_percentage (std::map <std::string, int32_t> my_map) { 
 	int32_t number_of_words = Words_counter(my_map);
 	std::vector<double> percentage;
 	int32_t i = 0;
-	for (std::map<char,int>::iterator it=my_map.begin(); it!=my_map.end(); ++it) {
+	for (std::map<std::string,int32_t>::iterator it=my_map.begin(); it!=my_map.end(); ++it) {
     	percentage[i] = it->second * 100 / number_of_words;
     	++i;
 	}
@@ -82,8 +83,8 @@ std::vector<double> Frequency_percentage (const std::map <std::string> &my_map) 
 }
 
 
-void Words_finder (std::ifstream input_file, std::ofstream output_file) {
-	std::vector<std::string> lines = Get_lines(input_file); 
+void Words_finder (std::string input) {
+	std::vector<std::string> lines = Get_lines(input); 
 	std::vector<std::string> words;
 	std::map<std::string, int32_t> frequency;
 	
@@ -92,6 +93,7 @@ void Words_finder (std::ifstream input_file, std::ofstream output_file) {
 		frequency = Words_classification (frequency, words);
 	}
 
+	Print_map (frequency);
  	/* сортируем frequency, Frequency_percentage (sorted_frequency), запись в файл */
 
 }
@@ -99,36 +101,13 @@ void Words_finder (std::ifstream input_file, std::ofstream output_file) {
 
 int main()
 {
+	setlocale(LC_ALL, "Russian");
 	std::string input = "";
 	std::string output = "";
 	std::cin >> input >> output ;
-	std::ifstream input_file (input);
 	std::ofstream output_file (output);
 	output_file << "wewefw";
-
-	std::vector<std::string> lines;
-    std::string line;
-    while (std::getline(input_file, line)) {
-        lines.push_back(line);
-    }
-
-    int number_of_lines = lines.size();
-
-    
-	/*std::cout << is_separator('_');
-	std::cout << is_separator('&');
-	std::cout << is_separator('s');
-	std::cout << is_separator('9');
-
-	std::string ilya_lalka = "efsdsdf,gg8gr,34rg67rgrgr&h";
-	std::vector<std::string> out_array = Parse_into_words("Shla Sasha__ s1 sushkoi");
-	int len = out_array.size();
-	for (int i = 0; i < len; i++) {
-		std::cout << out_array[i] << "\n";
-	}
-	*/
-	std::vector<std::string> words = Parse_into_words("Shla Sasha po shosse po po shosse");
-   	Words_finder(words);
+   	Words_finder(input);
 
 	return 0;
 }
