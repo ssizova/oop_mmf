@@ -24,7 +24,7 @@ void Print_vector_in_csv (std::vector<WordDescriptor> words, std::string output)
 	for (int32_t i = 0; i < size; ++i)
 	{
 		output_file << words[i].word << "," << words[i].frequency << ",";
-		output_file.precision (4);
+		output_file.precision (1);
 		output_file << words[i].frequency_percentage << std::endl;
 	}
 }
