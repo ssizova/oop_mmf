@@ -128,7 +128,7 @@ void Words_finder (std::string input, std::string output) {
 		words_in_vector = Parse_into_words (lines[i]);
 		words = Words_classification (words, words_in_vector);
 	}
-	std::vector<WordDescriptor> sorted_words = Sorting(words);
+	auto sorted_words = Sorting(words);
  	Print_vector_in_csv (sorted_words,output);
 
 }
