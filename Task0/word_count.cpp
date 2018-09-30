@@ -140,6 +140,5 @@ int main()
 	std::string output = "";
 	std::cin >> input >> output ;
    	Words_finder(input, output);
-
 	return 0;
 }
