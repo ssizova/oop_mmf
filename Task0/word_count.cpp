@@ -135,4 +135,4 @@ int main(int argc, char* argv[])
     std::string output = argv[2];
     Words_finder(input, output);
     return 0;
-}ы
+}
