@@ -2,15 +2,26 @@
 #include <fstream>
 #include <iostream>
 
-/*GameLife::GameLife(int32_t n, int32_t m) {
-scene = Field(n,m);
-}*/
-
 Field GameLife::getNextState() {
-   // return Field(0, 0);
+    int32_t n = scene.getFieldWidth();
+    int32_t m = scene.getFieldHeight();
+    Field newScene(n, m);
+
+    for (int32_t i = 0; i < n; ++i) {
+        for (int32_t j = 0; j < m; ++j) {
+            if (scene.getStatus(i, j) == 0) {
+                newScene.setStatus(i, j, scene.countAliveNeighbours(i, j) == 3);
+            } else {
+                newScene.setStatus(i, j, !((scene.countAliveNeighbours(i, j) > 3) ||
+                                           (scene.countAliveNeighbours(i, j) < 2)));
+            }
+        }
+    }
+    scene = newScene;
+    return newScene;
 }
 
-GameLife::GameLife(const std::string& input){
+GameLife::GameLife(const std::string &input) {
     int32_t n = 0;
     int32_t m = 0;
     std::ifstream input_file(input);

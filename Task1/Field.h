@@ -6,22 +6,27 @@
 #include <vector>
 
 struct Cell {
-    int32_t coordX;
-    int32_t coordY;
+    int32_t coordX = 0;
+    int32_t coord = 0;
     //char value;
-    bool status;
+    bool status = false; //mozhno li tak?
 };
 
 class Field {
-    //std::vector<std::vector<Cell>> field;
     std::vector<std::vector<Cell>> field;
 public:
-    Field(){}
-    Field(const std::vector<std::vector<char>>& values);
+    Field() = default;
+    Field(int32_t n, int32_t m);
+
+    explicit Field(const std::vector<std::vector<char>>& values);
     void setStatus(int32_t i, int32_t j, bool alive);
-    std::vector<Cell> getNeighbours(Cell cell);
+    std::vector<Cell> getNeighbours(int32_t i, int32_t j);
     bool getStatus(int32_t i, int32_t j);
+    int32_t countAliveNeighbours (int32_t i, int32_t j);
     void printField();
+    int32_t getFieldWidth();
+    int32_t getFieldHeight();
+
 };
 
 
