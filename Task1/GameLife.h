@@ -9,9 +9,9 @@
 class GameLife {
     Field scene;
 public:
-    GameLife(const std::string& input);
+    explicit GameLife(const std::string& input);
     Field getNextState();
-    //GameLife GameLife::setInitState(std::string input);
+    void playGame(int32_t iterations);
     void printScene();
 
 };

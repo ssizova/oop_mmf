@@ -7,8 +7,7 @@
 
 struct Cell {
     int32_t coordX = 0;
-    int32_t coord = 0;
-    //char value;
+    int32_t coordY = 0;
     bool status = false; //mozhno li tak?
 };
 
