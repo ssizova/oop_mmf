@@ -1,3 +1,5 @@
+#include <utility>
+
 #include "GameLife.h"
 #include <fstream>
 #include <iostream>
@@ -17,6 +19,7 @@ Field GameLife::getNextState() {
             }
         }
     }
+    scene = newScene;
     return newScene;
 }
 
@@ -40,7 +43,6 @@ GameLife::GameLife(const std::string &input) {
     }
     scene = Field(values);
     scene.printField();
-    std::cout << "1111" << std::endl;
 }
 
 void GameLife::printScene() {
@@ -55,5 +57,14 @@ void GameLife::playGame(int32_t iterations) {
         scene = getNextState();
 
     }
+}
+
+Field GameLife::getField() {
+    return scene;
+}
+
+GameLife::GameLife(Field field) {
+    scene = std::move(field);
+
 }
 

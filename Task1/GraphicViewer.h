@@ -15,9 +15,12 @@ class Viewer {
     sf::RenderWindow *my_window;
 public:
     Viewer(uint32_t width, uint32_t height);
+    ~Viewer();
 
     static void display_grid(sf::RenderWindow &rw, std::vector<sf::Vertex>);
-    static std::vector<sf::Vertex> make_grid(Field scene) ;
+    static std::vector<sf::Vertex> make_grid(GameLife scene,sf::RenderWindow &rw) ;
+    static void display_field(sf::RenderWindow &rw, GameLife scene);
+    static void display_game (GameLife initial,int32_t iterationNumber, sf::RenderWindow &rw);
 
 
 
