@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cmath>
-#include <windef.h>
+//#include <windef.h>
 #include "Field.h"
 
 Field::Field(int32_t n, int32_t m) {
