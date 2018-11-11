@@ -14,14 +14,14 @@ int main(int argc, char *argv[]) {
     long iteration_number = strtol(argv[2], &argv[2], 10);
 
     GameLife gl(input_name);
-    sf::RenderWindow rw(sf::VideoMode(width, height), "Game Life");
-    Viewer::display_grid(rw, gl);
-    if (iteration_number != 0) {
-        Viewer::display_game(gl, static_cast<int32_t>(iteration_number), rw);
-    } else {
-        Viewer::interactive_regime(gl, rw);
-    }
+    Viewer sfmlWindow(gl);
 
+
+    if (iteration_number != 0) {
+        sfmlWindow.display_game(gl, static_cast<int32_t>(iteration_number));
+    } else {
+        sfmlWindow.interactive_regime(gl);
+    }
     return 0;
 
 }

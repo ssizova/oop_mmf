@@ -6,21 +6,25 @@
 #include <random>
 #include "GameLife.h"
 
-const int32_t width = 1000;
-const int32_t height = 1000;
-
 
 class Viewer {
     sf::RenderWindow *my_window;
+    std::vector<sf::Vertex> grid;
+    int32_t windowWidth;
+    int32_t windowHeight;
+    std::vector<std::vector<sf::RectangleShape>> cells;
+
+
 public:
 
     ~Viewer();
 
-    static void display_grid(sf::RenderWindow &rw, GameLife game);
-    static std::vector<sf::Vertex> make_grid(sf::RenderWindow &rw,GameLife scene) ;
-    static void display_field(GameLife scene,sf::RenderWindow &rw);
-    static void display_game (GameLife initial,int32_t iterationNumber, sf::RenderWindow &rw);
-    static void interactive_regime(GameLife initial, sf::RenderWindow &rw);
+    explicit Viewer(GameLife scene);
+    void display_grid();
+    std::vector<sf::Vertex> make_grid(GameLife scene);
+    void display_field(GameLife scene);
+    void display_game(GameLife initial, int32_t iterationNumber);
+    void interactive_regime(GameLife initial);
 };
 
 

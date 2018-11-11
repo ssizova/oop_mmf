@@ -1,5 +1,7 @@
 #include <utility>
 
+#include <utility>
+
 #include <SFML/Graphics.hpp>
 #include "GameLife.h"
 #include "GraphicViewer.h"
@@ -10,96 +12,141 @@
 #include <search.h>
 
 
-void Viewer::display_grid(sf::RenderWindow &rw, GameLife game) {
-    auto vertexes = make_grid(rw, std::move(game));
-    rw.draw(&vertexes[0], vertexes.size(), sf::Lines);
+void Viewer::display_grid() {
+    my_window->draw(&grid[0], grid.size(), sf::Lines);
 }
 
-std::vector<sf::Vertex> Viewer::make_grid(sf::RenderWindow &rw, GameLife game) {
+std::vector<sf::Vertex> Viewer::make_grid(GameLife game) {
+
     Field scene = game.getField();
     int32_t n = scene.getFieldWidth();
     int32_t m = scene.getFieldHeight();
-    int32_t window_width = rw.getSize().x;
-    int32_t window_height = rw.getSize().y;
 
-    double_t coeff_x = double(window_width) / n;
-    double_t coeff_y = double(window_height) / m;
+    double_t coeff_x = double(windowWidth) / m;
+    double_t coeff_y = double(windowHeight) / n;
 
 
     std::vector<sf::Vertex> vertexes;
-    for (int i = 0; i < n + 1; ++i) {
+
+    for (int i = 0; i < m + 1; ++i) {
         vertexes.emplace_back(sf::Vector2f(static_cast<float>(i * coeff_x), 0));
-        vertexes.emplace_back(sf::Vector2f(static_cast<float>(i * coeff_x), static_cast<float>((n) * coeff_x)));
+        vertexes.emplace_back(sf::Vector2f(static_cast<float>(i * coeff_x), static_cast<float>((n) * coeff_y)));
     }
-    for (int j = 0; j < m + 1; ++j) {
+    for (int j = 0; j < n + 1; ++j) {
         vertexes.emplace_back(sf::Vector2f(0, static_cast<float>(j * coeff_y)));
-        vertexes.emplace_back(sf::Vector2f(static_cast<float>((m) * coeff_y), static_cast<float>(j * coeff_y)));
+        vertexes.emplace_back(sf::Vector2f(static_cast<float>((m) * coeff_x), static_cast<float>(j * coeff_y)));
     }
+
     return vertexes;
 
 }
 
-void Viewer::display_field(GameLife scene, sf::RenderWindow &rw) {
+void Viewer::display_field(GameLife scene) {
 
     Field field = scene.getField();
     int32_t n = field.getFieldWidth();
     int32_t m = field.getFieldHeight();
-    int32_t window_width = rw.getSize().x;
-    int32_t window_height = rw.getSize().y;
-    double_t coeff_x = double(window_width) / n;
-    double_t coeff_y = double(window_height) / m;
+//    double_t coeff_x = double(windowWidth) / m;
+//    double_t coeff_y = double(windowHeight) / n;
 
     sf::Color color;
+    sf::RectangleShape rectangle;
+
+
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < m; ++j) {
-            sf::RectangleShape rectangle(sf::Vector2f(static_cast<float>(coeff_x), static_cast<float>(coeff_y)));
             if (field.getStatus(i, j) == 1) {
                 color = sf::Color::Green;
             } else {
                 color = sf::Color::Black;
             }
-            rectangle.setFillColor(color);
-            rectangle.setOutlineThickness(1);
-            rectangle.setPosition(static_cast<float>(i * coeff_x), static_cast<float>(j * coeff_y));
-            rw.draw(rectangle);
+
+//            if (cells[i][j].getFillColor() == color) {
+//                continue;
+//            }
+            cells[i][j].setFillColor(color);
+            my_window->draw(cells[i][j]);
         }
     }
+
+
 }
 
-void Viewer::display_game(GameLife initial, int32_t iterationNumber, sf::RenderWindow &rw) {
+void Viewer::display_game(GameLife initial, int32_t iterationNumber) {
 
-    for (int i = 0; i < iterationNumber; ++i) {
-        display_field(initial, rw);
+    auto iter = 0;
+    while (iter < iterationNumber && my_window->isOpen()) {
+        sf::Event event{};
+        while (my_window->pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                my_window->close();
+            }
+        }
+        my_window->setActive();
+        display_field(initial);
         initial.getNextState();
-        rw.display();
-       // sleep(1);
+        display_grid();
+        my_window->display();
+        ++iter;
     }
-    rw.close();
 
 }
 
 Viewer::~Viewer() {
     my_window->close();
-    delete my_window;
 }
 
-void Viewer::interactive_regime(GameLife initial, sf::RenderWindow &rw) {
+void Viewer::interactive_regime(GameLife initial) {
     Field start = initial.getField();
-    while (rw.isOpen()) {
+    while (my_window->isOpen()) {
         sf::Event event{};
-        while (rw.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
-                rw.close();
-            display_field(initial, rw);
-            rw.display();
+        while (my_window->pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                my_window->close();
+            }
+
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Return)) {
-                display_field(initial, rw);
-                rw.display();
                 initial.getNextState();
             }
         }
+        my_window->setActive();
+        display_field(initial);
+        display_grid();
+        my_window->display();
+
+    }
+    my_window->close();
+
+}
+
+Viewer::Viewer(GameLife scene) {
+
+    my_window = new sf::RenderWindow(sf::VideoMode(1000, 1000), "Game Life");
+    Field field = scene.getField();
+    windowWidth = my_window->getSize().x;
+    windowHeight = my_window->getSize().y;
+    grid = make_grid(scene);
+
+
+    int32_t n = field.getFieldWidth();
+    int32_t m = field.getFieldHeight();
+
+    cells = std::vector<std::vector<sf::RectangleShape>>(static_cast<unsigned long>(n),
+                                                         std::vector<sf::RectangleShape>(
+                                                                 static_cast<unsigned long>(m)));
+    double_t coeff_x = double(windowWidth) / m;
+    double_t coeff_y = double(windowHeight) / n;
+
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j) {
+            cells[i][j] = sf::RectangleShape(sf::Vector2f(static_cast<float>(coeff_x), static_cast<float>(coeff_y)));
+            cells[i][j].setPosition(static_cast<float>(j * coeff_x), static_cast<float>(i * coeff_y));
+
+        }
     }
 }
+
+
 
 
 

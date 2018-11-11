@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.12)
 project(Task1)
 
 set(CMAKE_CXX_STANDARD 14)
-
+#set(CMAKE_CXX_FLAGS_RELEASE "-DNDEBUG -Wall -O2")
 
 #SET(SFML_FLAGS "-lsfml-graphics -lsfml-window -lsfml-system")
 #SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SFML_FLAGS}")
