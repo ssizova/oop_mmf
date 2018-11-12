@@ -46,8 +46,7 @@ void Viewer::display_field(GameLife scene) {
     Field field = scene.getField();
     int32_t n = field.getFieldWidth();
     int32_t m = field.getFieldHeight();
-//    double_t coeff_x = double(windowWidth) / m;
-//    double_t coeff_y = double(windowHeight) / n;
+
 
     sf::Color color;
     sf::RectangleShape rectangle;
@@ -112,6 +111,7 @@ void Viewer::interactive_regime(GameLife initial) {
         my_window->setActive();
         display_field(initial);
         display_grid();
+        sf::sleep(sf::milliseconds(2));
         my_window->display();
 
     }

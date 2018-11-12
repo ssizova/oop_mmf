@@ -40,23 +40,41 @@ void Field::setStatus(int32_t i, int32_t j, bool alive) {
     field[i][j].status = alive;
 }
 
-std::vector<Cell> Field::getNeighbours(int32_t i, int32_t j) {
+//std::vector<Cell> Field::getNeighbours(int32_t i, int32_t j) {
+//    int32_t n = field.size();
+//    int32_t m = field[0].size();
+//
+//    std::vector<Cell> neighbours;
+//    for (int32_t ii = -1; ii <= 1; ++ii) {
+//        for (int32_t jj = -1; jj <= 1; ++jj) {
+//            if (ii == 0 && jj == 0) {
+//                continue;
+//            }
+//            neighbours.push_back(field[(i + ii + n) % n][(j + jj + m) % m]);
+//
+//        }
+//
+//    }
+//
+//    return neighbours;
+//}
+int32_t Field::getNeighbours(int32_t i, int32_t j) {
     int32_t n = field.size();
     int32_t m = field[0].size();
-
-    std::vector<Cell> neighbours;
+    int32_t result = 0;
+//    std::vector<Cell> neighbours;
     for (int32_t ii = -1; ii <= 1; ++ii) {
         for (int32_t jj = -1; jj <= 1; ++jj) {
             if (ii == 0 && jj == 0) {
                 continue;
             }
-            neighbours.push_back(field[(i + ii + n) % n][(j + jj + m) % m]);
-
+            result += field[(i + ii + n) % n][(j + jj + m) % m].status;
+//            neighbours.push_back(field[(i + ii + n) % n][(j + jj + m) % m]);
         }
 
     }
 
-    return neighbours;
+    return result;
 }
 
 bool Field::getStatus(int32_t i, int32_t j) {
@@ -72,14 +90,14 @@ void Field::printField() {
     }
 }
 
-int32_t Field::countAliveNeighbours(int32_t i, int32_t j) {
-    std::vector<Cell> neighbours = getNeighbours(i, j);
-    int32_t counter = 0;
-    for (auto &neighbour : neighbours) {
-        counter += neighbour.status;
-    }
-    return counter;
-}
+//int32_t Field::countAliveNeighbours(int32_t i, int32_t j) {
+//    std::vector<Cell> neighbours = getNeighbours(i, j);
+//    int32_t counter = 0;
+//    for (auto &neighbour : neighbours) {
+//        counter += neighbour.status;
+//    }
+//    return counter;
+//}
 
 int32_t Field::getFieldWidth() {
     return field.size();

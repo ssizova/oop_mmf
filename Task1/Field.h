@@ -19,9 +19,10 @@ public:
 
     explicit Field(const std::vector<std::vector<char>>& values);
     void setStatus(int32_t i, int32_t j, bool alive);
-    std::vector<Cell> getNeighbours(int32_t i, int32_t j);
+    int32_t getNeighbours(int32_t i, int32_t j);
+//    std::vector<Cell> getNeighbours(int32_t i, int32_t j);
     bool getStatus(int32_t i, int32_t j);
-    int32_t countAliveNeighbours (int32_t i, int32_t j);
+//    int32_t countAliveNeighbours (int32_t i, int32_t j);
     void printField();
     int32_t getFieldWidth();
     int32_t getFieldHeight();
