@@ -1,8 +1,6 @@
 #include <utility>
 
 #include <utility>
-
-#include <SFML/Graphics.hpp>
 #include "GameLife.h"
 #include "GraphicViewer.h"
 #include <SFML/Graphics.hpp>
@@ -10,6 +8,7 @@
 #include <zconf.h>
 #include <SFML/Audio.hpp>
 #include <search.h>
+#include <memory>
 
 
 void Viewer::display_grid() {
@@ -116,9 +115,9 @@ void Viewer::interactive_regime(GameLife initial) {
 
 }
 
-Viewer::Viewer(GameLife scene) {
+Viewer::Viewer(GameLife scene) :
+    my_window(new sf::RenderWindow(sf::VideoMode(500, 500), "Game Life")) {
 
-    my_window = new sf::RenderWindow(sf::VideoMode(500, 500), "Game Life");
     Field field = scene.getField();
     windowWidth = my_window->getSize().x;
     windowHeight = my_window->getSize().y;
@@ -128,7 +127,8 @@ Viewer::Viewer(GameLife scene) {
     int32_t m = field.getFieldHeight();
 
     cells = std::vector<std::vector<sf::RectangleShape>>(static_cast<unsigned long>(n),
-                                                         std::vector<sf::RectangleShape>(static_cast<unsigned long>(m)));
+                                                         std::vector<sf::RectangleShape>(
+                                                                 static_cast<unsigned long>(m)));
     double_t coeff_x = double(windowWidth) / m;
     double_t coeff_y = double(windowHeight) / n;
 

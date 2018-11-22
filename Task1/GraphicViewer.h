@@ -5,9 +5,11 @@
 #include <SFML/Graphics.hpp>
 #include <random>
 #include "GameLife.h"
+#include <utility>
+#include <memory>
 
 class Viewer {
-    sf::RenderWindow *my_window;
+    std::unique_ptr<sf::RenderWindow> my_window;
     std::vector<sf::Vertex> grid;
     int32_t windowWidth;
     int32_t windowHeight;
