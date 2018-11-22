@@ -1,7 +1,6 @@
 #ifndef TASK1_GAMELIFE_H
 #define TASK1_GAMELIFE_H
 
-
 #include <cstdint>
 #include <string>
 #include "Field.h"
@@ -17,6 +16,5 @@ public:
     Field getField();
 
 };
-
 
 #endif //TASK1_GAMELIFE_H

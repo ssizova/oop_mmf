@@ -6,7 +6,6 @@
 #include <random>
 #include "GameLife.h"
 
-
 class Viewer {
     sf::RenderWindow *my_window;
     std::vector<sf::Vertex> grid;

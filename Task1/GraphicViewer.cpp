@@ -60,9 +60,6 @@ void Viewer::display_field(GameLife scene) {
                 color = sf::Color::Black;
             }
 
-//            if (cells[i][j].getFillColor() == color) {
-//                continue;
-//            }
             cells[i][j].setFillColor(color);
             my_window->draw(cells[i][j]);
         }
@@ -121,19 +118,17 @@ void Viewer::interactive_regime(GameLife initial) {
 
 Viewer::Viewer(GameLife scene) {
 
-    my_window = new sf::RenderWindow(sf::VideoMode(1000, 1000), "Game Life");
+    my_window = new sf::RenderWindow(sf::VideoMode(500, 500), "Game Life");
     Field field = scene.getField();
     windowWidth = my_window->getSize().x;
     windowHeight = my_window->getSize().y;
     grid = make_grid(scene);
 
-
     int32_t n = field.getFieldWidth();
     int32_t m = field.getFieldHeight();
 
     cells = std::vector<std::vector<sf::RectangleShape>>(static_cast<unsigned long>(n),
-                                                         std::vector<sf::RectangleShape>(
-                                                                 static_cast<unsigned long>(m)));
+                                                         std::vector<sf::RectangleShape>(static_cast<unsigned long>(m)));
     double_t coeff_x = double(windowWidth) / m;
     double_t coeff_y = double(windowHeight) / n;
 
