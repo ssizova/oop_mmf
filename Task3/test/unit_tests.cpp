@@ -1,9 +1,6 @@
 #include <gtest/gtest.h>
 #include "../Functions.h"
 
-TEST(Sonya, IsSonyaLalka) {
-    ASSERT_EQ(-1.0, -1);
-}
 
 TEST(function, myFunction) {
     auto f = my_function<double>;
