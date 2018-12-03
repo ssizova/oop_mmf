@@ -8,9 +8,8 @@
 
 
 int main() {
-    std::cout<<"wdww";
-//    constexpr auto N = 21;
+    constexpr auto N = 21;
 //    constexpr auto f = my_function<double>;
-//    //std::cout<<IntegrateSimpson<N>(my_function<double>);
-  return 0;
+    std::cout << IntegrateSimpson<N>();
+    return 0;
 }
