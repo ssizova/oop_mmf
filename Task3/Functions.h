@@ -1,7 +1,3 @@
-//
-// Created by sofia on 24.11.18.
-//
-
 #ifndef TASK3_FUNCTIONS_H
 #define TASK3_FUNCTIONS_H
 
@@ -16,39 +12,57 @@
 #include <vector>
 #include <valarray>
 
-constexpr int32_t leftNode = -5;
-constexpr int32_t rightNode = 5;
-
 
 template<typename argument>
 constexpr argument my_function(argument x) {
-    return x * x + 3 * (1 + x * x / 2 + x * x * x * x / 24);
+    return x * x * x * x; // + 3 * (1 + x * x / 2 + x * x * x * x / 24);
 }
 
-
-template<typename Function>
-constexpr double Integrate(Function my_function) {
-    return (rightNode - leftNode) / 6.0 * (my_function(leftNode) + 4 * my_function((leftNode + rightNode) / 2.0) +
-                                           my_function(rightNode));
-}
 
 template<int N, int L, class T>
 constexpr auto sum(std::array<T, N> a) {
-    constexpr double_t h = double(rightNode-leftNode)/(2*N);
-    if constexpr (L == N - 1) {
+    if constexpr (L == N) {
         return 0;
     } else {
         return std::get<L>(a) + sum<N, L + 1>(a);
     }
 }
 
+
+template<int32_t N, int L, class T>
+constexpr auto Make_coeffs(std::array<T, N> a) {
+    if constexpr (L == N) {
+        return a;
+    } else {
+        if constexpr (L != 0 && L != N - 1) {
+            if constexpr (L % 2 == 0) {
+                std::get<L>(a) *= 2 * (double(rightNode - leftNode) / (3 * N));
+
+            } else {
+                std::get<L>(a) *= 4 * (double(rightNode - leftNode) / (3 * N));
+
+            }
+        } else {
+            std::get<L>(a) = std::get<L>(a) * (double(rightNode - leftNode) / (3 * N));
+
+        }
+        return Make_coeffs<N, L + 1>(a);
+
+    }
+}
+
+
 constexpr auto f = my_function<double>;
 
 template<int32_t N>
 constexpr auto IntegrateSimpson() {
     constexpr auto a = make_array<N>(f);
-    constexpr auto s = sum<N, 0>(a);
-    return s;
+    std::copy(std::begin(a), std::end(a), std::ostream_iterator<double>(std::cout, ", "));
+    std::cout << std::endl;
+    constexpr auto coeffs = Make_coeffs<N, 0>(a);
+    std::copy(std::begin(coeffs), std::end(coeffs), std::ostream_iterator<double>(std::cout, ", "));
+    std::cout << std::endl;
+    return sum<N, 0>(coeffs);
 }
 
 
