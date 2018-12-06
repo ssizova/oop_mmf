@@ -13,8 +13,8 @@ template<int32_t N, class Function, std::size_t... Indices>
 constexpr auto MakeArrayHelper(Function f, std::index_sequence<Indices...>)
 -> std::array<typename std::result_of<Function(std::size_t)>::type, sizeof...(Indices)> {
 
-    constexpr double h = double(rightNode - leftNode) / (N-1);
-    return {{ f(leftNode + h * Indices)...}};
+    constexpr double h = double(rightNode - leftNode) / (N - 1);
+    return {{f(leftNode + h * Indices)...}};
 
 }
 
