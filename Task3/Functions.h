@@ -14,55 +14,56 @@
 
 
 template<typename argument>
-constexpr argument my_function(argument x) {
-    return x * x * x * x; // + 3 * (1 + x * x / 2 + x * x * x * x / 24);
+constexpr argument MyFunction(argument x) {
+    return x* x * x * x;
 }
 
 
 template<int N, int L, class T>
-constexpr auto sum(std::array<T, N> a) {
+constexpr auto Sum(std::array<T, N> a) {
     if constexpr (L == N) {
         return 0;
     } else {
-        return std::get<L>(a) + sum<N, L + 1>(a);
+        return std::get<L>(a) + Sum<N, L + 1>(a);
     }
 }
 
 
 template<int32_t N, int L, class T>
-constexpr auto Make_coeffs(std::array<T, N> a) {
+constexpr auto MakeCoeffs(std::array<T, N> a) {
     if constexpr (L == N) {
         return a;
     } else {
+        constexpr double h = double(rightNode - leftNode) / (N-1);
         if constexpr (L != 0 && L != N - 1) {
             if constexpr (L % 2 == 0) {
-                std::get<L>(a) *= 2 * (double(rightNode - leftNode) / (3 * N));
+                std::get<L>(a) *= (2 * h/3);
 
             } else {
-                std::get<L>(a) *= 4 * (double(rightNode - leftNode) / (3 * N));
+                std::get<L>(a) *=( 4 * h/3);
 
             }
         } else {
-            std::get<L>(a) = std::get<L>(a) * (double(rightNode - leftNode) / (3 * N));
+            std::get<L>(a) *=( h/3);
 
         }
-        return Make_coeffs<N, L + 1>(a);
+        return MakeCoeffs<N, L + 1>(a);
 
     }
 }
 
 
-constexpr auto f = my_function<double>;
+constexpr auto f = MyFunction<double>;
 
 template<int32_t N>
 constexpr auto IntegrateSimpson() {
-    constexpr auto a = make_array<N>(f);
+    constexpr auto a = MakeArray<N>(f);
     std::copy(std::begin(a), std::end(a), std::ostream_iterator<double>(std::cout, ", "));
     std::cout << std::endl;
-    constexpr auto coeffs = Make_coeffs<N, 0>(a);
+    constexpr auto coeffs = MakeCoeffs<N, 0>(a);
     std::copy(std::begin(coeffs), std::end(coeffs), std::ostream_iterator<double>(std::cout, ", "));
     std::cout << std::endl;
-    return sum<N, 0>(coeffs);
+    return Sum<N, 0>(coeffs);
 }
 
 
