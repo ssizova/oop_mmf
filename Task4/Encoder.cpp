@@ -37,7 +37,7 @@ Encoder::Encoder(std::string input, std::string output) {
     std::cout<< "Extra = "<<bw.extraBits<<std::endl;
 
     outfile << static_cast<unsigned char>(bw.extraBits) <<std::endl;
-    for (const auto &i: bytes) {
+    for (const auto &i: line) {
         outfile << i;
     }
 outfile<<std::endl;

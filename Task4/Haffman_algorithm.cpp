@@ -2,24 +2,6 @@
 #include "Haffman_algorithm.h"
 
 
-std::vector<Element> Sorting(std::vector<Element> bytes) {
-    std::vector<Element> sorted_vector;
-    Element object;
-    int32_t i = 0;
-
-    for (auto &kv : bytes) {
-        object.byte = kv.byte;
-        object.quantity = kv.quantity;
-        object.isLeaf = kv.isLeaf;
-        object.left = kv.left;
-        object.right = kv.right;
-        ++i;
-        sorted_vector.push_back(object);
-    }
-    std::sort(sorted_vector.begin(), sorted_vector.end(),
-              [](Element d1, Element d2) { return d1.quantity < d2.quantity; });
-    return sorted_vector;
-}
 
 std::vector<std::shared_ptr<Element> > ReadingBytes(const std::string &path) {
     std::ifstream f(path, std::ios::binary);
@@ -70,7 +52,6 @@ MakeQueue(const std::vector<std::shared_ptr<Element> > &vector) {
     for (auto i = 0; i < std::size(vector); ++i) {
 
         queue.push(vector[i]);
-//        std::cout<<"rfe " << queue.size()<<std::endl;
     }
     return queue;
 }
@@ -87,7 +68,6 @@ std::shared_ptr<Element> MakeTree(const std::vector<std::shared_ptr<Element> > &
         std::cout << second->byte << ":" << second->quantity << std::endl;
         Tree.pop();
         auto next = MakeNode(first, second);
-//        std::cout<<next.quantity<<std::endl;
 
         Tree.push(next);
 
@@ -100,7 +80,6 @@ std::shared_ptr<Element> MakeTree(const std::vector<std::shared_ptr<Element> > &
 void printMap(std::map<char, std::vector<bool>> table) {
 
     for (auto kv:table){
-//        std::string str(kv.second.begin(), kv.second.end());
         std::cout<<kv.first << " ";
         for (auto i: kv.second) {
             std::cout<<i;

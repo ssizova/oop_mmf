@@ -54,7 +54,7 @@ public:
 std::priority_queue<std::shared_ptr<Element> , std::vector<std::shared_ptr<Element> >, ElementComparator>
 MakeQueue(const std::vector<std::shared_ptr<Element> > &vector);
 
-std::vector<Element> Sorting(std::vector<Element> bytes);
+//std::vector<Element> Sorting(std::vector<Element> bytes);
 
 std::vector<std::shared_ptr<Element> > ReadingBytes(const std::string &path);
 

@@ -72,20 +72,19 @@ std::vector<char> bytes;
 
 void TreeforBytes::DeepBypass(std::shared_ptr<Element> root) {//, std::ofstream output) {
 
-    if (root->isLeaf) {
-        bytes.push_back(root->byte);
-        return;
-    }
-
-    if (root->left != nullptr) {
-        bytes.push_back('0');
+    if (root->left!= nullptr){
         DeepBypass(root->left);
-
+    }
+    if (root->right!= nullptr){
+        DeepBypass(root->right);
     }
 
-    if (root->right != nullptr) {
+    if (root->isLeaf) {
         bytes.push_back('1');
-        DeepBypass(root->right);
+        bytes.push_back(root->byte);
+    }
+    else {
+        bytes.push_back('0');
     }
 }
 
