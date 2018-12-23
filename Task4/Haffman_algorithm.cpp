@@ -26,17 +26,16 @@ std::vector<std::shared_ptr<Element> > ReadingBytes(const std::string &path) {
 
     f.seekg(0, std::ios::end);
     auto size = f.tellg();
-    std::cout << "Size of file: " << size << std::endl;
     f.seekg(0, std::ios::beg);
 
     std::vector<int32_t> weights(256, 0);
     for (int i = 0; i < size; i++) {
         unsigned char symbol;
         f.read((char *) &symbol, sizeof(symbol));
-        std::cout << symbol << " ";
+//        std::cout << symbol << " ";
         ++weights[symbol];
     }
-    std::cout << std::endl;
+//    std::cout << std::endl;
 
     std::vector<std::shared_ptr<Element> > nonzero_weights;
     for (auto i = 0; i < 256; ++i) {
@@ -48,7 +47,7 @@ std::vector<std::shared_ptr<Element> > ReadingBytes(const std::string &path) {
             nonzero_weights.push_back(buffer);
         }
     }
-
+//    f.close();
     return nonzero_weights;
 }
 

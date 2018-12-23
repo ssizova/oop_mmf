@@ -3,14 +3,16 @@
 //
 
 #include <iostream>
+#include <bitset>
 #include "BitWriter.h"
 
 void BitWriter::WriteBit(bool b) {
 //    int32_t i = 0;
     ++index;
-    currentByte << 1u;
-    currentByte = currentByte| b;
-    std::cout<<currentByte<<" ";
+//    std::cout << "Bit=" << b << std::endl;
+    currentByte <<= 1;
+    currentByte = currentByte | b;
+//    std::cout << std::bitset<8>(currentByte) << " currentByte" << std::endl;
 
     if (index % 8 == 0) {
         bytes.push_back(currentByte);
@@ -20,14 +22,15 @@ void BitWriter::WriteBit(bool b) {
 }
 
 std::vector<char> BitWriter::getBytes() {
+//    std::cout << "index=" << index << std::endl;
     if (index % 8 != 0) {
         int32_t difference = 8 - index % 8;
         currentByte = currentByte << unsigned(difference);
         extraBits = difference;
-        std::cout<<"Difference= "<<difference;
+        std::cout << "Difference= " << difference<<std::endl;
         bytes.push_back(currentByte);
     }
-    std::cout<<"Byte= "<<currentByte;
+//    std::cout << "Byte=" << std::bitset<8>(currentByte);
 
     return bytes;
 }

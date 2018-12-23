@@ -14,7 +14,6 @@ class Encoder {
 //    bool flag = 0; //0 for coding
 std::map<char,std::vector<bool >> table;
 
-
 public:
     explicit Encoder(std::string input, std::string output);
 

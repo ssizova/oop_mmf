@@ -2,6 +2,7 @@
 // Created by sofia on 21.12.18.
 //
 
+#include <vector>
 #include "TreeforBytes.h"
 
 
@@ -37,20 +38,21 @@ void TreeforBytes::printTree() {
     }
 }
 
-std::vector<bool> code;
-std::map<char, std::vector<bool>> table;
+//std::vector<bool> code;
+//std::map<char, std::vector<bool>> table;
 
-void TreeforBytes::MakeCode(std::shared_ptr<Element> root) {
+void TreeforBytes::MakeCode(std::shared_ptr<Element> root, std::vector<bool> &code,
+        std::map<char, std::vector<bool>> &table) {
 
 //    std::shared_ptr<Element> current = root;
     if (root->left != nullptr) {
         code.push_back(false);
-        MakeCode(root->left);
+        MakeCode(root->left, code, table);
     }
 
     if (root->right != nullptr) {
         code.push_back(true);
-        MakeCode(root->right);
+        MakeCode(root->right, code, table);
     }
     if (root->isLeaf) {
         table[root->byte] = code;
@@ -60,7 +62,9 @@ void TreeforBytes::MakeCode(std::shared_ptr<Element> root) {
 
 
 std::map<char, std::vector<bool>> TreeforBytes::Coding() {
-    MakeCode(root);
+    std::vector<bool> code;
+    std::map<char, std::vector<bool>> table;
+    MakeCode(root, code, table);
     return table;
 }
 
@@ -86,14 +90,15 @@ void TreeforBytes::DeepBypass(std::shared_ptr<Element> root) {//, std::ofstream 
 }
 
 
-void TreeforBytes::PrintTreeToFile(std::string output) {
+std::vector<char> TreeforBytes::PrintTreeToFile() {
 //    std::vector<char> bytes;
-    auto outfile = std::ofstream(output);
+//    auto outfile = std::ofstream(output);
     DeepBypass(root);
-    for (auto i: bytes) {
-        std::cout << i;
-        outfile << i;
-    }
+//    for (auto i: bytes) {
+//        std::cout << i;
+//        outfile << i;
+//    }
+return bytes;
 }
 
 

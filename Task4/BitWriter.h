@@ -13,10 +13,11 @@ class BitWriter {
     std::vector<char> bytes;
     unsigned char currentByte = 0;
     int32_t index = 0;
-    int32_t extraBits = 0;
 public:
+    int32_t extraBits = 0;
     void WriteBit(bool b);
     std::vector<char> getBytes();
+
 
 
 

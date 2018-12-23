@@ -8,8 +8,7 @@
 #include "BitWriter.h"
 
 
-
-Encoder::Encoder(std::string input,std::string output) {
+Encoder::Encoder(std::string input, std::string output) {
     auto outfile = std::ofstream(output);
     auto bytes = ReadingBytes(input);
     TreeforBytes Tree = TreeforBytes(bytes);
@@ -17,7 +16,7 @@ Encoder::Encoder(std::string input,std::string output) {
 
     BitWriter bw;
 
-    std::ifstream f (input, std::ios::binary);
+    std::ifstream f(input, std::ios::binary);
 
     f.seekg(0, std::ios::end);
     auto size = f.tellg();
@@ -27,17 +26,23 @@ Encoder::Encoder(std::string input,std::string output) {
         unsigned char symbol;
         f.read((char *) &symbol, sizeof(symbol));
         auto code = table[symbol];
-        for (auto bit: code){
+        for (auto bit: code) {
             bw.WriteBit(bit);
         }
     }
-    std::cout <<std::endl<< "******"<< std::endl;
     auto codedBytes = bw.getBytes();
-    std::cout <<std::endl<< "******"<< std::endl;
-    std::cout<<codedBytes.size();
-    for (auto s: codedBytes){
-        outfile<<s;
-//        std::cout<<"5";
+
+    std::cout << codedBytes.size();
+    auto line = Tree.PrintTreeToFile();
+    std::cout<< "Extra = "<<bw.extraBits<<std::endl;
+
+    outfile << static_cast<unsigned char>(bw.extraBits) <<std::endl;
+    for (const auto &i: bytes) {
+        outfile << i;
+    }
+outfile<<std::endl;
+    for (auto s: codedBytes) {
+          outfile << s;
 
     }
     outfile.close();
