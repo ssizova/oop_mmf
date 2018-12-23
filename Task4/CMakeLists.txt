@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.12)
 project(Task4)
+find_package(GTest REQUIRED)
+include_directories(test)
+add_executable(runTests test/tests.cpp test/tests.cpp)
+target_link_libraries(runTests ${GTEST_LIBRARIES} pthread)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(Task4 main.cpp cmake-build-debug/CMakeFiles/Haffman_algorithm.cpp cmake-build-debug/CMakeFiles/Haffman_algorithm.h Haffman_algorithm.cpp Haffman_algorithm.h)
+add_executable(Task4 main.cpp Haffman_algorithm.cpp TreeforBytes.cpp TreeforBytes.h BitWriter.cpp BitWriter.h Encoder.cpp Encoder.h)
