@@ -9,10 +9,16 @@
 #include "Haffman_algorithm.h"
 
 class TreeforBytes {
-    std::shared_ptr<Element> root;
-    void printElement(std::shared_ptr<Element>  e);
 
 public:
+
+    std::shared_ptr<Element> root;
+
+    TreeforBytes() = default;;
+
+    explicit TreeforBytes(std::shared_ptr<Element> element);
+    void printElement(std::shared_ptr<Element>  e);
+
     explicit TreeforBytes (const std::vector<std::shared_ptr<Element> > &array);
     void printTree();
     std::map<char,std::vector<bool>> Coding();

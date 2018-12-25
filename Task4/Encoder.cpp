@@ -1,4 +1,4 @@
-//
+ //
 // Created by sofia on 23.12.18.
 //
 
@@ -9,7 +9,7 @@
 
 
 Encoder::Encoder(std::string input, std::string output) {
-    auto outfile = std::ofstream(output);
+    auto outfile = std::ofstream(output, std::ios::binary);
     auto bytes = ReadingBytes(input);
     TreeforBytes Tree = TreeforBytes(bytes);
     table = Tree.Coding();
@@ -36,14 +36,20 @@ Encoder::Encoder(std::string input, std::string output) {
     auto line = Tree.PrintTreeToFile();
     std::cout<< "Extra = "<<bw.extraBits<<std::endl;
 
-    outfile << static_cast<unsigned char>(bw.extraBits) <<std::endl;
+    outfile << static_cast<unsigned char>(bw.extraBits);// <<std::endl;
+    std::cout << "size of line: " << line.size() << std::endl;
+//    outfile << line.size();
+    unsigned long treeSize = line.size();
+    outfile.write(reinterpret_cast<const char *>(&treeSize), sizeof(treeSize));
+//    outfile << static_cast<unsigned char>(std::size(line));
     for (const auto &i: line) {
-        outfile << i;
+        outfile << static_cast<unsigned char>(i);
     }
-outfile<<std::endl;
+
     for (auto s: codedBytes) {
           outfile << s;
 
     }
     outfile.close();
 }
+

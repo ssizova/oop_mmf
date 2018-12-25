@@ -16,6 +16,7 @@ void BitWriter::WriteBit(bool b) {
 
     if (index % 8 == 0) {
         bytes.push_back(currentByte);
+        std::cout <<"bByte = "<<std::bitset<8>(currentByte)<<std::endl;
         currentByte = 0;
     }
 //    return 0;
@@ -28,6 +29,7 @@ std::vector<char> BitWriter::getBytes() {
         currentByte = currentByte << unsigned(difference);
         extraBits = difference;
         std::cout << "Difference= " << difference<<std::endl;
+        std::cout <<"Bbyte = "<<std::bitset<8>(currentByte)<<std::endl;
         bytes.push_back(currentByte);
     }
 //    std::cout << "Byte=" << std::bitset<8>(currentByte);

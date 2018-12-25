@@ -2,7 +2,6 @@
 #include "Haffman_algorithm.h"
 
 
-
 std::vector<std::shared_ptr<Element> > ReadingBytes(const std::string &path) {
     std::ifstream f(path, std::ios::binary);
 
@@ -14,10 +13,8 @@ std::vector<std::shared_ptr<Element> > ReadingBytes(const std::string &path) {
     for (int i = 0; i < size; i++) {
         unsigned char symbol;
         f.read((char *) &symbol, sizeof(symbol));
-//        std::cout << symbol << " ";
         ++weights[symbol];
     }
-//    std::cout << std::endl;
 
     std::vector<std::shared_ptr<Element> > nonzero_weights;
     for (auto i = 0; i < 256; ++i) {
@@ -62,10 +59,10 @@ std::shared_ptr<Element> MakeTree(const std::vector<std::shared_ptr<Element> > &
 
     while (std::size(Tree) > 1) {
         auto first = Tree.top();
-        std::cout << first->byte << ":" << first->quantity << std::endl;
+//        std::cout << first->byte << ":" << first->quantity << std::endl;
         Tree.pop();
         auto second = Tree.top();
-        std::cout << second->byte << ":" << second->quantity << std::endl;
+//        std::cout << second->byte << ":" << second->quantity << std::endl;
         Tree.pop();
         auto next = MakeNode(first, second);
 

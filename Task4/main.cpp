@@ -12,6 +12,7 @@
 #include "Haffman_algorithm.h"
 #include "TreeforBytes.h"
 #include "Encoder.h"
+#include "Decoder.h"
 
 int main() {
     std::string path = "input.txt";
@@ -26,8 +27,15 @@ int main() {
     Tree.printTree();
     auto table = Tree.Coding();
     printMap(table);
-//    Tree.PrintTreeToFile("output.txt");
-    auto x = Encoder("input.txt", "outtt.txt");
+    auto x = Encoder("input.txt", "out.txt");
+    Decoder("out.txt","new.txt");
+//    auto y = Encoder("barash.bmp","out2.bmp");
+//    Decoder("out2.bmp", "newbarash.bmp");
+
+//    auto z = Encoder("wilde_picture_of_dorian_gray_txt.txt", "out3.txt");
+//    Decoder("out3.txt", "new_wilde.txt");
+
+
     return 0;
 }
 

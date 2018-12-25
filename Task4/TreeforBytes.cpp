@@ -100,6 +100,11 @@ std::vector<char> TreeforBytes::PrintTreeToFile() {
 return bytes;
 }
 
+TreeforBytes::TreeforBytes(std::shared_ptr<Element> element) {
+    root = element;
+
+}
+
 
 
 
