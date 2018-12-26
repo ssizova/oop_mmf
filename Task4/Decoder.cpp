@@ -111,9 +111,3 @@ Decoder::Decoder(std::string archive, std::string decodedFile) {
     auto outfile = std::ofstream(decodedFile);
     outfile << sss;
 }
-
-
-
-
-
-

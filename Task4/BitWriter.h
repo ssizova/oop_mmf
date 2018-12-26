@@ -18,12 +18,6 @@ public:
     void WriteBit(bool b);
     std::vector<char> getBytes();
 
-
-
-
-
 };
-
-
 
 #endif //TASK4_BITWRITER_H

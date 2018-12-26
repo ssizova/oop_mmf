@@ -30,18 +30,6 @@ struct Element {
         return quantity < rhs.quantity;
     }
 
-//    bool operator>(const Element &rhs) const {
-//        return rhs < *this;
-//    }
-//
-//    bool operator<=(const Element &rhs) const {
-//        return !(rhs < *this);
-//    }
-//
-//    bool operator>=(const Element &rhs) const {
-//        return !(*this < rhs);
-//    }
-
 };
 
 class ElementComparator {

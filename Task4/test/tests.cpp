@@ -14,10 +14,8 @@
 #include <vector>
 #include <map>
 #include <algorithm>
-
 #include <gmock/gmock.h>
-//#include "md5.h"
-//WillRepeatedly::testing::ElementsAre
+
 using ::testing::_;
 using ::testing::Invoke;
 
@@ -122,12 +120,6 @@ TEST (Huffman_algorithm, MakeTree) {
     EXPECT_THAT(leftSon->quantity, 3);
 
 }
-//
-//TEST(CompareFiles, HeshSum){
-//    auto  a =md5("input.txt");
-//    auto b = md5("new.txt");
-//    EXPECT_THAT(a,b);
-//}
 
 
 TEST (main, CompareFiles) {
@@ -188,16 +180,6 @@ TEST(main, Compression) {
 }
 
 
-//class MockRule : public ByteTree {
-//public:
-//    MOCK_METHOD0(Coding,std::map<char, std::vector<bool>>());
-//};
-//
-//class TreeFixture: public::testing::Test{
-//    auto mytree = TreeforBytes(std);
-//
-//};
-
 TEST(TreeforBytes, Coding) {
 
     auto t = MakeTestTree();
@@ -225,9 +207,7 @@ TEST(TreeforBytes, DeepBypass) {
     auto t = MakeTestTree();
     auto treeLine = t->PrintTreeToFile();
     std::vector<char> expected = {'1', 'a', '1', 'b', '0', '1', 'c', '0'};
-//    for (auto i:treeLine){
-//        std::cout<<i;
-//    }
+
     auto difference1 = std::equal(treeLine.begin(), treeLine.end(),
                                   expected.begin(), expected.end());
     EXPECT_THAT(difference1, true);
@@ -248,9 +228,6 @@ TEST(BitWriter, Write_GetBit) {
 
 }
 
-//TEST(Encoder, Compress){
-//
-//}
 
 int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);
