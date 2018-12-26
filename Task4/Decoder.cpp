@@ -1,17 +1,11 @@
-//
-// Created by sofia on 24.12.18.
-//
-
 #include "Decoder.h"
 #include <bitset>
 #include <stack>
 
 
 std::string Decoder::Decode(std::string codedData, const std::map<char, std::vector<bool>> &table) {
-
     std::string decoded;
     std::vector<bool> current;
-    unsigned long long index = 0;
     while (!codedData.empty()) {
         current.push_back(codedData.front() == '1');
 
@@ -22,30 +16,22 @@ std::string Decoder::Decode(std::string codedData, const std::map<char, std::vec
             current.push_back(codedData.front() == '1');
 
             codedData.erase(codedData.begin());
-//            if (codedData.size() < 10) {
-//                std::cout << "coded data: " << codedData << std::endl;
-//            }
             err = IsInMap(table, current, &answer);
-//            answer = IsInMap(table, current);
+
         }
         decoded += answer;
-//        std::cout << static_cast<int>(answer) << ":" << index++ << std::endl;
         current.clear();
     }
     return decoded;
 }
 
 int Decoder::IsInMap(std::map<char, std::vector<bool>> table, std::vector<bool> key, char *out) {
-//    std::string answer;
     for (auto i:table) {
         if (key == i.second) {
-//            answer.push_back(i.first);
             *out = i.first;
             return 0;
         }
     }
-//    answer = "No";
-//    return answer;
     return -1;
 }
 
@@ -82,63 +68,51 @@ TreeforBytes Decoder::RestoreTree(std::vector<unsigned char> line) {
 Decoder::Decoder(std::string archive, std::string decodedFile) {
     std::ifstream f(archive, std::ios::binary);
 
+    int runner = 0;
     f.seekg(0, std::ios::end);
     auto size = f.tellg();
     f.seekg(0, std::ios::beg);
 
     unsigned char symbol;
-//    f.read((char *) &symbol, sizeof(symbol));
-//    extraBites = symbol;
     f >> symbol;
-    std::cout << "extra bits read: " << static_cast<int>(symbol) << std::endl;
+    runner += sizeof(symbol);
+    extraBites = symbol;
 
     unsigned long TreeLength = 0;
     f.read(reinterpret_cast<char *>(&TreeLength), sizeof(TreeLength));
+    runner += sizeof(TreeLength);
 
-//    std::cout << "tree length: " << TreeLength << std::endl;
 
     std::vector<unsigned char> treeLine;
-    for (int i = 0; i < TreeLength ; i++) {
+    for (int i = 0; i < TreeLength; i++) {
         f.read((char *) &symbol, sizeof(symbol));
+        runner += sizeof(symbol);
         treeLine.push_back(symbol);
     }
-    for (auto i = 0; i < std::size(treeLine); ++i) {
-        std::cout << (treeLine[i]) << " ";
-    }
-    std::cout << std::endl;
+
+
     std::string codedData;
-    for (int i = TreeLength + 2; i < size; ++i) {
-        f.read((char *) &symbol, sizeof(symbol));
-        auto x = std::bitset<8>(symbol);
+    for (auto i = runner; i < size; ++i) {
+
+        unsigned char symbol2;
+        f.read((char *) &symbol2, sizeof(symbol2));
+        auto x = std::bitset<8>(symbol2);
         codedData += x.to_string();
-
     }
-    codedData.erase(codedData.end() - extraBites, codedData.end());
-//    codedData.erase(codedData.end() - extraBites, codedData.end());
-    std::cout << codedData;
 
+    codedData.erase(codedData.end() - extraBites, codedData.end());
 
     tree = RestoreTree(treeLine);
-    std::cout << "Left =" << tree.root->right->left->byte << std::endl;
 
-    std::cout << "Restored map is" << std::endl;
     auto t = tree.Coding();
-//    for (const auto &i: t) {
-//        std::cout << i.first << ": ";
-//        for (auto s:i.second) {
-//            std::cout << s;
-//        }
-//    }
-    std::cout << std::endl << "lkk" << std::endl;
+
     std::string sss = Decode(codedData, t);
-//    std::cout << "String is" << std::endl << sss;
+
     auto outfile = std::ofstream(decodedFile);
     outfile << sss;
-
-
 }
 
-//    std::cout << std::endl;
+
 
 
 

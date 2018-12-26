@@ -19,14 +19,13 @@ std::vector<std::shared_ptr<Element> > ReadingBytes(const std::string &path) {
     std::vector<std::shared_ptr<Element> > nonzero_weights;
     for (auto i = 0; i < 256; ++i) {
         if (weights[i] != 0) {
-            std::shared_ptr<Element> buffer (new Element);
+            std::shared_ptr<Element> buffer(new Element);
             buffer->byte = static_cast<unsigned char>(i);
             buffer->quantity = weights[i];
             buffer->isLeaf = true;
             nonzero_weights.push_back(buffer);
         }
     }
-//    f.close();
     return nonzero_weights;
 }
 
@@ -42,10 +41,9 @@ std::shared_ptr<Element> MakeNode(std::shared_ptr<Element> first, std::shared_pt
 }
 
 
-std::priority_queue<std::shared_ptr<Element> , std::vector<std::shared_ptr<Element> >, ElementComparator>
+std::priority_queue<std::shared_ptr<Element>, std::vector<std::shared_ptr<Element> >, ElementComparator>
 MakeQueue(const std::vector<std::shared_ptr<Element> > &vector) {
-    std::priority_queue<std::shared_ptr<Element> , std::vector<std::shared_ptr<Element> >, ElementComparator> queue;
-    std::cout << "MakeQueue - std::size(vector) - " << std::size(vector) << std::endl;
+    std::priority_queue<std::shared_ptr<Element>, std::vector<std::shared_ptr<Element> >, ElementComparator> queue;
     for (auto i = 0; i < std::size(vector); ++i) {
 
         queue.push(vector[i]);
@@ -55,14 +53,11 @@ MakeQueue(const std::vector<std::shared_ptr<Element> > &vector) {
 
 std::shared_ptr<Element> MakeTree(const std::vector<std::shared_ptr<Element> > &array) {
     auto Tree = MakeQueue(array);
-    std::cout << "MakeTree - std::size(vector) - " << std::size(Tree) << std::endl;
 
     while (std::size(Tree) > 1) {
         auto first = Tree.top();
-//        std::cout << first->byte << ":" << first->quantity << std::endl;
         Tree.pop();
         auto second = Tree.top();
-//        std::cout << second->byte << ":" << second->quantity << std::endl;
         Tree.pop();
         auto next = MakeNode(first, second);
 
@@ -76,12 +71,12 @@ std::shared_ptr<Element> MakeTree(const std::vector<std::shared_ptr<Element> > &
 
 void printMap(std::map<char, std::vector<bool>> table) {
 
-    for (auto kv:table){
-        std::cout<<kv.first << " ";
+    for (auto kv:table) {
+        std::cout << kv.first << " ";
         for (auto i: kv.second) {
-            std::cout<<i;
+            std::cout << i;
         }
-        std::cout<<std::endl;
+        std::cout << std::endl;
     }
 }
 

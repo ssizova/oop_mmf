@@ -54,15 +54,12 @@ public:
 std::priority_queue<std::shared_ptr<Element> , std::vector<std::shared_ptr<Element> >, ElementComparator>
 MakeQueue(const std::vector<std::shared_ptr<Element> > &vector);
 
-//std::vector<Element> Sorting(std::vector<Element> bytes);
 
 std::vector<std::shared_ptr<Element> > ReadingBytes(const std::string &path);
 
 
 std::shared_ptr<Element> MakeNode(std::shared_ptr<Element> first, std::shared_ptr<Element> second);
 
-
-//void Coding(std::string filename);
 
 std::shared_ptr<Element>  MakeTree(const std::vector<std::shared_ptr<Element> > &array);
 void printMap(std::map<char, std::vector<bool>> table);

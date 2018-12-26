@@ -8,29 +8,26 @@
 
 #include "Haffman_algorithm.h"
 
-class TreeforBytes {
 
-public:
-
+class TreeforBytes {//: ByteTree {
     std::shared_ptr<Element> root;
-
+public:
     TreeforBytes() = default;;
 
     explicit TreeforBytes(std::shared_ptr<Element> element);
-    void printElement(std::shared_ptr<Element>  e);
 
-    explicit TreeforBytes (const std::vector<std::shared_ptr<Element> > &array);
-    void printTree();
-    std::map<char,std::vector<bool>> Coding();
+    explicit TreeforBytes(const std::vector<std::shared_ptr<Element> > &array);
+
+    std::map<char, std::vector<bool>> Coding();
+
     void MakeCode(std::shared_ptr<Element> root, std::vector<bool> &code,
                   std::map<char, std::vector<bool>> &table);
+
     std::vector<char> PrintTreeToFile();
-    void DeepBypass(std::shared_ptr<Element> root);//, std::ofstream output);
 
+    void DeepBypass(std::shared_ptr<Element> root, std::vector<char> &bytes);
 
-
-
-    };
+};
 
 
 #endif //TASK4_TREEFORBYTES_H

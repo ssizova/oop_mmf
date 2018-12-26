@@ -14,26 +14,23 @@
 #include "Encoder.h"
 #include "Decoder.h"
 
-int main() {
-    std::string path = "input.txt";
-    auto v = ReadingBytes(path);
-    for (const auto &i: v)
-        std::cout << i->byte << ":" << i->quantity << " ";
-    std::cout << std::endl;
+int main(int argc, char *argv[]) {
 
-    TreeforBytes Tree = TreeforBytes(v);
+    if (argc != 4) {
+        std::cout << "No input and output files. Please, enter, or the program won't work!";
+        return -1;
+    }
+    std::string flag = argv[1];
+    std::string input = argv[2];
+    std::string output = argv[3];
 
-
-    Tree.printTree();
-    auto table = Tree.Coding();
-    printMap(table);
-    auto x = Encoder("input.txt", "out.txt");
-    Decoder("out.txt","new.txt");
-//    auto y = Encoder("barash.bmp","out2.bmp");
-//    Decoder("out2.bmp", "newbarash.bmp");
-
-//    auto z = Encoder("wilde_picture_of_dorian_gray_txt.txt", "out3.txt");
-//    Decoder("out3.txt", "new_wilde.txt");
+    if (flag == "-c") {
+        auto x = Encoder(input, output);
+    } else if (flag == "-d") {
+        auto decoder = Decoder(output, input);
+    } else {
+        std::cout << "Your flag is not for compression or decompression";
+    }
 
 
     return 0;
