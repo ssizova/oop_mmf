@@ -1,4 +1,4 @@
-#include <iostream>
+
 #include <iostream>
 #include <cstdint>
 #include <memory>
@@ -28,23 +28,14 @@ constexpr double Integrate(Function my_function) {
 
 
 }
-//template<size_t index> struct MetaFunc {
-//    enum { value = index + 1 };
-//};
-//
-//void test() {
-//    const size_t count = 5;
-//    typedef generate_array<count, MetaFunc>::result A;
-//
-//    for (size_t i=0; i<count; ++i)
-//        std::cout << A::data[i] << "\n";
-//}
+
 
 int main() {
     Array<double> ny(5);
     auto f = my_function<double>;
     //auto result = Integrate(f);
     std::cout << Integrate(f);
+
 
     return 0;
 }
