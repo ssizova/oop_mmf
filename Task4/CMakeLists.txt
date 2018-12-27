@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 find_package(GTest REQUIRED)
 include_directories(test)
-add_executable(runTests test/tests.cpp test/tests.cpp Haffman_algorithm.cpp TreeforBytes.cpp BitWriter.cpp Encoder.cpp test/md5.h)
+add_executable(runTests test/tests.cpp test/tests.cpp Haffman_algorithm.cpp TreeforBytes.cpp BitWriter.cpp Encoder.cpp)
 target_link_libraries(runTests ${GTEST_LIBRARIES} pthread)
 
 
