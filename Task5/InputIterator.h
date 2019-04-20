@@ -18,16 +18,22 @@ using iterator_category = std::input_iterator_tag;
 
 template<typename ... Args>
 class InputIterator {
-    bool isEnd = false;
     std::ifstream *file;
 public:
+    bool isEnd = false;
+    bool lastElement = false;
     std::tuple<Args...> lines;
     int32_t index = 0;
+    char separator = ',';
+    std::string screening = "quotes";
 
 
-    InputIterator(std::ifstream *input, bool isEnd) {
+    InputIterator(std::ifstream *input, bool isEnd, char separator, std::string screening) {
         file = input;
         this->isEnd = isEnd;
+        separator = separator;
+        screening = screening;
+
 //        lines = std::make_tuple<Args...>;
     }
 
@@ -42,16 +48,17 @@ public:
     }
 
     InputIterator operator++() {
-//    getline(*file,line);
-//    lines = std::make_tuple(line);
-        lines = parse<Args...>(file);
+        if (!lastElement) {
+            lines = parse<Args...>(file);
+            index++;
+            std::cout << index;
+            std::cout << "++ ";
+            lastElement = file->eof();
+        } else {
+            isEnd = file->eof();
+        }
 
-        index++;
-        std::cout << "++ ";
-        isEnd = file->eof();
         return (*this);
-//        return (*std::next(this));
-
     }
 
 

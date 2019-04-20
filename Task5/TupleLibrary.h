@@ -31,14 +31,22 @@ template<typename T>
 std::tuple<T> parse(std::istream *is) {
     T t;
     (*is) >> t;
+//    try {
+    if (is->fail()) {
+        throw std::exception("Invalid format of input data!");
+    }
     return std::tuple<T>(std::move(t));
 }
 
-template<typename T, typename Arg, typename... Args>
-std::tuple<T, Arg, Args...> parse(std::istream *is) {
+template<typename T, typename Arg,  typename... Args>
+std::tuple<T, Arg,  Args...> parse(std::istream *is) {
     T t;
     (*is) >> t;
+//    if
     return std::tuple_cat(std::tuple<T>(std::move(t)),
-                          parse<Arg, Args...>(is));
+//                          parse<Arg, Sep, Args...>(is));
+    parse<Arg,  Args...>(is));
+
 }
+
 #endif //TASK5_TUPLELIBRARY_H
