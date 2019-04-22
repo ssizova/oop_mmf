@@ -2,11 +2,12 @@
 #define INPUTOPERATOR_H
 //
 
-#include <xutility>
+//#include <xutility>
 #include <vector>
 #include <memory>
 #include <istream>
 #include <fstream>
+#include "TupleLibrary.h"
 //
 // Created by Sizova on 18.03.2019.
 //
@@ -25,16 +26,14 @@ public:
     std::tuple<Args...> lines;
     int32_t index = 0;
     char separator = ',';
-    std::string screening = "quotes";
+    char screnning = '"';
 
 
-    InputIterator(std::ifstream *input, bool isEnd, char separator, std::string screening) {
+    InputIterator(std::ifstream *input, bool isEnd, char separator, char scr) {
         file = input;
         this->isEnd = isEnd;
-        separator = separator;
-        screening = screening;
-
-//        lines = std::make_tuple<Args...>;
+        this->separator = separator;
+        this->screnning = scr;
     }
 
 
@@ -43,16 +42,16 @@ public:
     }
 
     bool operator==(InputIterator rhs) {
-        std::cout << "==";
+//        std::cout << "==";
         return (rhs.isEnd == this->isEnd);
     }
 
     InputIterator operator++() {
         if (!lastElement) {
-            lines = parse<Args...>(file);
+            lines = parse<Args...>(file,separator);
             index++;
-            std::cout << index;
-            std::cout << "++ ";
+//            std::cout << index;
+//            std::cout << "++ ";
             lastElement = file->eof();
         } else {
             isEnd = file->eof();

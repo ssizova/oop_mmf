@@ -6,6 +6,7 @@
 #define TASK5_TUPLELIBRARY_H
 
 #include <tuple>
+#include <sstream>
 
 template<class TupleType, int current, int size>
 struct tuple_printer {
@@ -28,24 +29,28 @@ void print_tuple(const std::tuple<Args...> &tuple) {
 }
 
 template<typename T>
-std::tuple<T> parse(std::istream *is) {
+std::tuple<T> parse(std::istream *is, char separator) {
     T t;
     (*is) >> t;
+
 //    try {
     if (is->fail()) {
-        throw std::exception("Invalid format of input data!");
+        throw std::runtime_error("Invalid format of input data!");
     }
     return std::tuple<T>(std::move(t));
 }
 
-template<typename T, typename Arg,  typename... Args>
-std::tuple<T, Arg,  Args...> parse(std::istream *is) {
+template<typename T, typename Arg, typename... Args>
+std::tuple<T, Arg, Args...> parse(std::istream *is, char separator) {
     T t;
-    (*is) >> t;
-//    if
+    std::string s;
+    std::getline(*is, s, separator);
+    std::istringstream temp(s);
+    temp >> t;
+
+
     return std::tuple_cat(std::tuple<T>(std::move(t)),
-//                          parse<Arg, Sep, Args...>(is));
-    parse<Arg,  Args...>(is));
+                          parse<Arg, Args...>(is, separator));
 
 }
 
