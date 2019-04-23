@@ -17,6 +17,8 @@
 
 using iterator_category = std::input_iterator_tag;
 
+
+
 template<typename ... Args>
 class InputIterator {
     std::ifstream *file;
@@ -27,6 +29,7 @@ public:
     int32_t index = 0;
     char separator = ',';
     char screnning = '"';
+
 
 
     InputIterator(std::ifstream *input, bool isEnd, char separator, char scr) {
@@ -48,10 +51,8 @@ public:
 
     InputIterator operator++() {
         if (!lastElement) {
-            lines = parse<Args...>(file,separator);
+            lines = parse<Args...>(file, separator, index);
             index++;
-//            std::cout << index;
-//            std::cout << "++ ";
             lastElement = file->eof();
         } else {
             isEnd = file->eof();

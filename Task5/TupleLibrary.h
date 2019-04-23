@@ -7,6 +7,8 @@
 
 #include <tuple>
 #include <sstream>
+#include <iostream>
+//#include "InputIterator.h"
 
 template<class TupleType, int current, int size>
 struct tuple_printer {
@@ -29,19 +31,19 @@ void print_tuple(const std::tuple<Args...> &tuple) {
 }
 
 template<typename T>
-std::tuple<T> parse(std::istream *is, char separator) {
+std::tuple<T> parse(std::istream *is, char separator, int line_number) {
     T t;
     (*is) >> t;
-
-//    try {
     if (is->fail()) {
-        throw std::runtime_error("Invalid format of input data!");
+        std::string exception = "Invalid format of input data! The error is at string number"
+                                + std::to_string(line_number+1);
+        throw std::runtime_error(exception);
     }
     return std::tuple<T>(std::move(t));
 }
 
 template<typename T, typename Arg, typename... Args>
-std::tuple<T, Arg, Args...> parse(std::istream *is, char separator) {
+std::tuple<T, Arg, Args...> parse(std::istream *is, char separator, int line_number ) {
     T t;
     std::string s;
     std::getline(*is, s, separator);
@@ -50,7 +52,7 @@ std::tuple<T, Arg, Args...> parse(std::istream *is, char separator) {
 
 
     return std::tuple_cat(std::tuple<T>(std::move(t)),
-                          parse<Arg, Args...>(is, separator));
+                          parse<Arg, Args...>(is, separator,line_number));
 
 }
 
