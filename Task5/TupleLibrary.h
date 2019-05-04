@@ -33,26 +33,34 @@ void print_tuple(const std::tuple<Args...> &tuple) {
 template<typename T>
 std::tuple<T> parse(std::istream *is, char separator, int line_number) {
     T t;
+
     (*is) >> t;
     if (is->fail()) {
-        std::string exception = "Invalid format of input data! The error is at string number"
-                                + std::to_string(line_number+1);
+        std::string exception = "Invalid format of input data! The error is at string number "
+                                + std::to_string(line_number + 1);
         throw std::runtime_error(exception);
     }
     return std::tuple<T>(std::move(t));
 }
 
 template<typename T, typename Arg, typename... Args>
-std::tuple<T, Arg, Args...> parse(std::istream *is, char separator, int line_number ) {
+std::tuple<T, Arg, Args...> parse(std::istream *is, char separator, int line_number) {
     T t;
     std::string s;
     std::getline(*is, s, separator);
     std::istringstream temp(s);
+    std::cout<<"S:  "<<s<<"Send  "<<std::endl;
     temp >> t;
+
+    if (temp.fail()) {
+        std::string exception = "Invalid format of input data! The error is at string number second"
+                                + std::to_string(line_number + 1);
+        throw std::runtime_error(exception);
+    }
 
 
     return std::tuple_cat(std::tuple<T>(std::move(t)),
-                          parse<Arg, Args...>(is, separator,line_number));
+                          parse<Arg, Args...>(is, separator, line_number));
 
 }
 
