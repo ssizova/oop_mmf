@@ -51,7 +51,12 @@ public:
 
     InputIterator operator++() {
         if (!lastElement) {
-            lines = parse<Args...>(file, separator, index);
+            std::string line ;
+            std::getline(*file,line);
+            std::istringstream ss(line);
+//            std::cout<<"line = "<<line<<std::endl;
+            lines = parse<Args...>(&ss, separator, index,0)
+                    ;
             index++;
             lastElement = file->eof();
         } else {
