@@ -25,10 +25,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        functionmaker.cpp \
         main.cpp \
         mainwindow.cpp
 
 HEADERS += \
+        functionmaker.h \
         mainwindow.h
 
 FORMS += \
