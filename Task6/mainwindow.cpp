@@ -12,7 +12,7 @@ void MainWindow::Calculate() {
     double A = coeffA->text().toDouble();
     double B = coeffB->text().toDouble();
     double C = coeffC->text().toDouble();
-    auto data = FunctionMaker(A, B, C);
+    auto data = FunctionMaker(A, B, C,100);
     auto y = data.function_points;
     auto x = data.nodes;
 
