@@ -5,8 +5,10 @@
 #-------------------------------------------------
 
 QT       += core gui
+#include(C:\Qt\qtcharts\mkspecs\modules\qt_lib_charts.pri)
+#QT += charts
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
 TARGET = Task6
 TEMPLATE = app
@@ -27,11 +29,14 @@ CONFIG += c++11
 SOURCES += \
         functionmaker.cpp \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+        qcustomplot.cpp
 
 HEADERS += \
+        ../../qcustomplot/qcustomplot.h \
         functionmaker.h \
-        mainwindow.h
+        mainwindow.h \
+        qcustomplot.h
 
 FORMS += \
         mainwindow.ui

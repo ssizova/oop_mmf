@@ -7,6 +7,7 @@
 #include <QObject>
 #include<iostream>
 #include "functionmaker.h"
+#include "qcustomplot.h"
 
 //#include <QtChart/QLineSeries>
 
@@ -16,6 +17,8 @@ class MainWindow;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
+    QCustomPlot *chart;      // Объявляем объект QCustomPlot
+    QCPItemTracer *tracer;      // Трасировщик по точкам графика
 
 public:
     explicit MainWindow(QWidget* parent = nullptr);
@@ -23,10 +26,9 @@ public:
     QLineEdit* coeffA = new QLineEdit;
     QLineEdit* coeffB = new QLineEdit;
     QLineEdit* coeffC = new QLineEdit;
+    QBoxLayout *horizontal = new QBoxLayout(QBoxLayout::LeftToRight);
     QLabel* lblB;
 
-
-    virtual void paintEvent(QPaintEvent* event);
 
 public slots:
     void Calculate ();

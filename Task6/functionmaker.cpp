@@ -6,7 +6,6 @@ std::vector<double> MakeNodes(int N, double left, double right) {
     double h = (right - left) / N;
     for (auto i = 1; i <= N; ++i) {
         x[i] += i * h;
-
     }
     return x;
 }
