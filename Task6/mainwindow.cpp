@@ -6,7 +6,7 @@
 #include <QtWidgets>
 #include <iostream>
 #include <QObject>
-//#include <QtChart>
+
 
 void MainWindow::Calculate() {
     double A = coeffA->text().toDouble();
@@ -23,16 +23,27 @@ void MainWindow::Calculate() {
     pen->setColor(QColor(127, 242, 143));
     chart->clearGraphs();
     chart->addGraph();
-//    chart->graph(0)->setPen(QColor(127, 242, 143));
     chart->graph()->setPen(*pen);
     chart->graph(0)->setData(x_nodes,y_nodes);
+
+    chart->xAxis->setLabel("x");
+    chart->yAxis->setLabel("y");
 
     chart->xAxis->rescale(true);
     chart->yAxis->rescale(true);
     chart->graph(0)->setAdaptiveSampling(true);
     chart->setBackgroundScaled(true);
     chart->replot();
-    horizontal->addWidget(chart,66);
+    horizontal->addWidget(chart,80);
+
+
+    QPixmap myPixmap;
+    myPixmap.load(":/magistr_Ioda.jpg");
+    myPixmap.setDevicePixelRatio(5);
+
+    QLabel *picture = new QLabel();
+    picture->setPixmap(myPixmap);
+    layout->addWidget(picture);
 
 
 }
@@ -62,7 +73,6 @@ MainWindow::MainWindow(QWidget *parent)
     QLabel *lblC = new QLabel("Coeff C");
 
 
-    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
 
     layout->addWidget(lblA);
     layout->addWidget(coeffA);
@@ -78,7 +88,7 @@ MainWindow::MainWindow(QWidget *parent)
     layout->addWidget(calcBtn);
     setCentralWidget(widget);
 
-    horizontal->addLayout(layout,33);
+    horizontal->addLayout(layout,20);
     widget->setLayout(horizontal);
 }
 

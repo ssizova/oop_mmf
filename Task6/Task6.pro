@@ -33,13 +33,15 @@ SOURCES += \
         qcustomplot.cpp
 
 HEADERS += \
-        ../../qcustomplot/qcustomplot.h \
         functionmaker.h \
         mainwindow.h \
         qcustomplot.h
 
 FORMS += \
         mainwindow.ui
+
+RESOURCES += \
+magistr_Ioda.jpg
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
