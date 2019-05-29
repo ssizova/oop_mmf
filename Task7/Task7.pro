@@ -26,7 +26,6 @@ CONFIG += c++14
 
 SOURCES += \
         gas_dynamics.cpp \
-        linear_algebra.cpp \
         main.cpp \
         mainwindow.cpp \
         qcustomplot.cpp
@@ -34,7 +33,6 @@ SOURCES += \
 
 HEADERS += \
         gas_dynamics.h \
-        linear_algebra.h \
         mainwindow.h \
         qcustomplot.h
 
@@ -42,7 +40,15 @@ HEADERS += \
 FORMS += \
         mainwindow.ui
 
+RESOURCES += \
+    left_side.dat \
+    right_side.dat
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    left_side.dat \
+    right_side.dat

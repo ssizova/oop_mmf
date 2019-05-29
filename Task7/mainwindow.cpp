@@ -8,9 +8,16 @@
 #include <iostream>
 #include <QObject>
 #include<vector>
+#include <QPen>
+#include <QFile>
+#include <QMessageBox>
 
+auto g = 100;
 void MainWindow::correctPlot(QCustomPlot* chart, QVector<double> x,
                              QVector<double> y, QString x_axis,QString y_axis){
+    QPen* pen = new QPen;
+    pen->setWidth(5);
+    pen->setColor(QColor(127, g, 143));
     chart->clearGraphs();
     chart->addGraph();
     chart->graph(0)->setData(x,y);
@@ -19,43 +26,51 @@ void MainWindow::correctPlot(QCustomPlot* chart, QVector<double> x,
     chart->xAxis->rescale(true);
     chart->yAxis->rescale(true);
     chart->graph(0)->setAdaptiveSampling(true);
+    chart->graph()->setPen(*pen);
     chart->setBackgroundScaled(true);
+    g+=30;
 }
 
 void MainWindow::Calculate() {
-    //    double A = coeffA->text().toDouble();
-    //    double B = coeffB->text().toDouble();
-    //    double C = coeffC->text().toDouble();
-    std::size_t N = 10;
-    std::vector<double> x = {0,1,2,3};
+    double x_left = from->text().toDouble();
+    double x_right = to->text().toDouble();
+    uint32_t number_of_nodes = static_cast<uint32_t>(N->text().toDouble());
+    double tmax = final_time->text().toDouble();
+    double gamma = adiabata->text().toDouble();
+    try {
+        auto solver = gas_dynamics(number_of_nodes,x_left,x_right,gamma,tmax);
+        auto nodes = solver.nodes;
 
-    std::vector<double> y = {0,1,4,9};
+        auto density_exact = solver.density;
+        auto pressure_exact = solver.pressure;
+        auto velocity_exact = solver.velocity;
+        auto entropy_exact = solver.entropy;
+        auto temperature_exact = solver.temperature;
 
-    QVector<double> x_nodes = QVector<double>::fromStdVector(x);
-    QVector<double> y_nodes = QVector<double>::fromStdVector(y);
 
-    auto module = gas_dynamics(100,-5,5,1.4,2.5);
-    auto density_exact = module.Exact(3,2.5);
-    auto x1 = module.nodes;
-//    std::cout<< density_exact.size();
 
-    QVector<double> x_d = QVector<double>::fromStdVector(x1);
-    QVector<double> dens = QVector<double>::fromStdVector(density_exact);
+        QVector<double> x = QVector<double>::fromStdVector(nodes);
+        QVector<double> dens = QVector<double>::fromStdVector(density_exact);
+        QVector<double> pres = QVector<double>::fromStdVector(pressure_exact);
+        QVector<double> vel = QVector<double>::fromStdVector(velocity_exact);
+        QVector<double> ent = QVector<double>::fromStdVector(entropy_exact);
+        QVector<double> temp = QVector<double>::fromStdVector(temperature_exact);
 
-    correctPlot(density,x_d,dens,"t","density");
-    correctPlot(pressure,x_nodes,y_nodes,"t","pressure");
-    correctPlot(velocity,x_nodes,y_nodes,"t","velocity");
-    correctPlot(temperature,x_nodes,y_nodes,"t","temperature");
-    correctPlot(entropy,x_nodes,y_nodes,"t","entropy");
+        correctPlot(density,x,dens,"x","density");
+        correctPlot(pressure,x,pres,"x","pressure");
+        correctPlot(velocity,x,vel,"x","velocity");
+        correctPlot(temperature,x,ent,"x","temperature");
+        correctPlot(entropy,x,temp,"x","entropy");
 
-    vertical->addWidget(density,40);
-    vertical->addWidget(pressure,40);
-    charts_right->addWidget(velocity,33);
-    charts_right->addWidget(temperature,33);
-    charts_right->addWidget(entropy,33);
-    //    global->addLayout(charts_right);
-    global->addLayout(charts_right,50);
-
+        vertical->addWidget(density,40);
+        vertical->addWidget(pressure,40);
+        charts_right->addWidget(velocity,33);
+        charts_right->addWidget(temperature,33);
+        charts_right->addWidget(entropy,33);
+        global->addLayout(charts_right,50);
+    } catch(std::exception &error){
+        QMessageBox::warning(this,"Validation error", error.what());
+    }
 }
 
 MainWindow::MainWindow(QWidget *parent)
@@ -66,15 +81,14 @@ MainWindow::MainWindow(QWidget *parent)
                 "QLineEdit { background: rgb(252, 242, 147); selection-background-color: rgb(255,255, 255); }");
     to->setStyleSheet(
                 "QLineEdit { background: rgb(252, 242, 147); selection-background-color: rgb(255,255, 255); }");
-    adiabata->setStyleSheet(
-                "QLineEdit { background: rgb(252, 242, 147); selection-background-color: rgb(255,255, 255); }");
     N->setStyleSheet(
-                "QLineEdit { background: rgb(252, 242, 147); selection-background-color: rgb(255,255, 255); }");
+                "QLineEdit { background: rgb(254, 209, 153); selection-background-color: rgb(255,255, 255); }");
     final_time->setStyleSheet(
-                "QLineEdit { background: rgb(252, 242, 147); selection-background-color: rgb(255,255, 255); }");
+                "QLineEdit { background: rgb(158, 227, 173); selection-background-color: rgb(255,255, 255); }");
+    adiabata->setStyleSheet(
+                "QLineEdit { background: rgb(158, 227, 243); selection-background-color: rgb(255,255, 255); }");
 
-    left.setFileName("left_side.dat");
-    right.setFileName("right_side.dat");
+
 
     QWidget *widget = new QWidget();
     density = new QCustomPlot();
