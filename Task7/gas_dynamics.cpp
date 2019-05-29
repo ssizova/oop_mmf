@@ -194,7 +194,7 @@ std::vector<double> gas_dynamics::Exact(const int &parameter) //1 - Density, 2 -
     double x3 = velocity3 * T_max;
     double x4 = Shock_wave_velocity * T_max;
 
-    if (x1 > x_left || x4 > x_right) {
+    if (x1 < x_left || x4 > x_right) {
         std::string exception = "Invalid interval for x! Please, expand it.";
         throw std::runtime_error(exception);
     }
