@@ -1,7 +1,7 @@
 #ifndef GAS_DYNAMICS_H
 #define GAS_DYNAMICS_H
 #include <stdint.h>
-//#include "linear_algebra.h"
+#include "initial_parameters.h"
 #include <vector>
 #include <fstream>
 #include <QString>
@@ -9,10 +9,10 @@
 class gas_dynamics
 {
     uint32_t N;
-    double x_left = -5;
-    double x_right = 5;
-    double T_max = 2.5;
-    double adiabata = 1.4;
+    double x_left =0;
+    double x_right = 0;
+    double T_max = 0;
+    double adiabata = 0;
     double density_left = 0;//= 1.0;
     double density_right;// = 0.125;
     double velocity_left ;//= 0;
@@ -32,13 +32,12 @@ public:
 
 
     std::vector<double> make_nodes();
-    gas_dynamics(uint32_t number_of_nodes, double x_left, double x_right, double adiabata, double Tmax);
+    gas_dynamics(uint32_t number_of_nodes, double xleft, double xright, double gamma, double Tmax, initial_parameters params);
     double derivative(const double &p3);
     double ExpressionForP3(const double &p3);
     double Newton();
     std::vector<double> Exact(const int &parameter);
     std::vector<double> InitialCondition(const int &parametr);
-//    std::vector<double> InitialCondition2(const int &parametr);
     int find_index(const double &value);
     std::vector<double> Entropy();
     std::vector<double> Temperature ();

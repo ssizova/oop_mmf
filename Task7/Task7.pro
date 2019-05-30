@@ -33,6 +33,7 @@ SOURCES += \
 
 HEADERS += \
         gas_dynamics.h \
+        initial_parameters.h \
         mainwindow.h \
         qcustomplot.h
 

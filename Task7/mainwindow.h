@@ -8,7 +8,7 @@
 #include <QFile>
 #include<iostream>
 #include "qcustomplot.h"
-
+#include"initial_parameters.h"
 
 namespace Ui {
 class MainWindow;
@@ -22,8 +22,8 @@ class MainWindow : public QMainWindow {
     QCustomPlot *entropy;
     QCustomPlot *pressure;
 
-    QFile left;
-    QFile right;
+//    QFile left;
+//    QFile right;
 public:
     void correctPlot(QCustomPlot* chart, QVector<double> x,
                      QVector<double> y, QString x_axis,QString y_axis);
@@ -45,7 +45,7 @@ public:
     QBoxLayout *auxillary = new QBoxLayout(QBoxLayout::TopToBottom);
     QBoxLayout * charts_right = new QBoxLayout(QBoxLayout::TopToBottom);
 
-
+//    initial_parameters read_initials();
 public slots:
     void Calculate ();
 

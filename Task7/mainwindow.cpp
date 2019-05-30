@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 #include "qcustomplot.h"
 #include "gas_dynamics.h"
-
+#include <iostream>
 #include<QVector>
 #include <QtWidgets>
 #include <iostream>
@@ -11,6 +11,7 @@
 #include <QPen>
 #include <QFile>
 #include <QMessageBox>
+#include <sstream>
 
 auto g = 100;
 void MainWindow::correctPlot(QCustomPlot* chart, QVector<double> x,
@@ -37,8 +38,10 @@ void MainWindow::Calculate() {
     uint32_t number_of_nodes = static_cast<uint32_t>(N->text().toDouble());
     double tmax = final_time->text().toDouble();
     double gamma = adiabata->text().toDouble();
+    initial_parameters conditions;
+
     try {
-        auto solver = gas_dynamics(number_of_nodes,x_left,x_right,gamma,tmax);
+        auto solver = gas_dynamics(number_of_nodes,x_left,x_right,gamma,tmax, conditions);
         auto nodes = solver.nodes;
 
         auto density_exact = solver.density;
@@ -46,7 +49,6 @@ void MainWindow::Calculate() {
         auto velocity_exact = solver.velocity;
         auto entropy_exact = solver.entropy;
         auto temperature_exact = solver.temperature;
-
 
 
         QVector<double> x = QVector<double>::fromStdVector(nodes);
@@ -146,3 +148,5 @@ MainWindow::~MainWindow() {
     delete ui;
 
 }
+
+

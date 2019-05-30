@@ -14,46 +14,21 @@ std::vector<double> gas_dynamics::make_nodes() {
     return nodes;
 }
 
-gas_dynamics::gas_dynamics(uint32_t number_of_nodes, double x_left, double x_right, double adiabata, double Tmax) {
-    QFile lfile(left);
-    if (!lfile.open(QIODevice::ReadOnly | QIODevice::Text))
-        return;
+gas_dynamics::gas_dynamics(uint32_t number_of_nodes, double xleft, double xright,
+                           double gamma, double Tmax, initial_parameters params) {
 
-    QTextStream in(&lfile);
-    std::string lstr;
-    while (!in.atEnd()) {
-        QString line = in.readLine() + "\n";
-        lstr += line.toUtf8().constData();
-    }
+    density_left = params.density_left;
+    density_right = params.density_right;
+    velocity_left = params.velocity_left;
+    velocity_right = params.velocity_right;
+    pressure_left = params.pressure_left;
+    pressure_right = params.pressure_right;
 
-    QFile rfile(right);
-    if (!rfile.open(QIODevice::ReadOnly | QIODevice::Text))
-        return;
-
-    QTextStream rin(&rfile);
-    std::string rstr;
-    while (!rin.atEnd()) {
-        QString line = rin.readLine() + "\n";
-        rstr += line.toUtf8().constData();
-    }
-
-    auto l = std::stringstream(lstr);
-    auto r = std::stringstream(rstr);
-
-    l >> density_left;
-    l >> pressure_left;
-    l >> velocity_left;
-
-    r >> density_right;
-    r >> pressure_right;
-    r >> velocity_right;
-
-
-    this->N = number_of_nodes;
-    this->T_max = Tmax;
-    this->x_left = x_left;
-    this->x_right = x_right;
-    this->adiabata = adiabata;
+    N = number_of_nodes;
+    T_max = Tmax;
+    x_left = xleft;
+    x_right = xright;
+    adiabata = gamma;
     nodes = make_nodes();
 
     pressure = Exact(3);
@@ -62,8 +37,6 @@ gas_dynamics::gas_dynamics(uint32_t number_of_nodes, double x_left, double x_rig
     entropy = Entropy();
     temperature = Temperature();
 }
-
-bool flag = true;
 
 double gas_dynamics::derivative(const double &p3) {
 
@@ -87,18 +60,7 @@ double gas_dynamics::ExpressionForP3(const double &p3) {
                         ((adiabata + 1) * p3 + (adiabata - 1) * pressure_right);
     double right_part = (p3 - pressure_right) * (1 - bulky_frac) / density_right;
 
-    if (flag) {
-        double s = (2 / (adiabata - 1) * sqrt(adiabata * pow(pressure_left, 1 / adiabata) / density_left) *
-                    (pow(pressure_left, (adiabata - 1) / 2 / adiabata) - pow(0.142, (adiabata - 1) / 2 / adiabata)) -
-                    velocity_right) *
-                   (2 / (adiabata - 1) * sqrt(adiabata * pow(pressure_left, 1 / adiabata) / density_left) *
-                    (pow(pressure_left, (adiabata - 1) / 2 / adiabata) - pow(0.142, (adiabata - 1) / 2 / adiabata)) -
-                    velocity_right) -
-                   (0.142 - pressure_right) * (1 - bulky_frac) / density_right;
 
-
-        flag = false;
-    }
     return left_part * left_part - right_part;
 }
 
@@ -114,7 +76,6 @@ double gas_dynamics::Newton()//perhaps, I will add initial approximation as a pa
     } while (fabs(ExpressionForP3(solution_pressure)) >= e);
     return solution_pressure;
 }
-
 std::vector<double> gas_dynamics::InitialCondition(const int &parametr) //1 - rho, 2 - u, 3 - p.
 {
     std::vector<double> initial_data(N + 1, 0);
@@ -124,12 +85,12 @@ std::vector<double> gas_dynamics::InitialCondition(const int &parametr) //1 - rh
             initial_data[j] = density_left;
             j++;
         }
-        for (j = N / 2; j <= N; j++)
+        for (j = N / 2+1; j <= N; j++)
             initial_data[j] = density_right;
     } else if (parametr == 2) {
         for (int j = 0; j <= int(N / 2); j++)
             initial_data[j] = velocity_left;
-        for (int j = int(N / 2); j <= N; ++j) {
+        for (int j = int(N / 2)+1; j <= N; ++j) {
             initial_data[j] = velocity_right;
         }
     } else {
@@ -138,7 +99,7 @@ std::vector<double> gas_dynamics::InitialCondition(const int &parametr) //1 - rh
             initial_data[j] = pressure_left;
             j++;
         }
-        for (j = N / 2; j <= N; j++)
+        for (j = N / 2+1; j <= N; j++)
             initial_data[j] = pressure_right;
     }
     return initial_data;
@@ -207,24 +168,22 @@ std::vector<double> gas_dynamics::Exact(const int &parameter) //1 - Density, 2 -
     int j1 = find_index(x1);
     int j2 = find_index(x2);
 
-    std::cout << j1;
-    std::cout << j2;
 
     double c = 0;
-    for (int i = j1 + 1; i <= j2; i++) {
+    for (auto i = j1 + 1; i <= j2; i++) {
         c = 2 / b * (c1 - 0.5 * a * nodes[i] / T_max);
         ExactDensity[i] = pow(c * c / adiabata * pow(density_left, adiabata) / pressure_left, 1 / a);
         ExcactVelocity[i] = (2.0 / b) * (c1 + nodes[i] / T_max);
         ExcactPressure[i] = c * c * ExactDensity[i] / adiabata;
     }
     j1 = find_index(x3);
-    for (int i = j2 + 1; i <= j1; i++) {
+    for (auto i = j2 + 1; i <= j1; i++) {
         ExactDensity[i] = density_3a;
         ExcactVelocity[i] = velocity3;
         ExcactPressure[i] = pressure3;
     }
     j2 = find_index(x4);
-    for (int i = j1 + 1; i <= j2; i++) {
+    for (auto i = j1 + 1; i <= j2; i++) {
         ExactDensity[i] = density3;
         ExcactVelocity[i] = velocity3;
         ExcactPressure[i] = pressure3;
