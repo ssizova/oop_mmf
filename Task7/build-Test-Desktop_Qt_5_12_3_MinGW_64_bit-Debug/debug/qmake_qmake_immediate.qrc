@@ -1,0 +1,6 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/">
+<file alias="left_side.dat">C:/Users/Sizov/oop_mmf/Task7/Test/left_side.dat</file>
+<file alias="right_side.dat">C:/Users/Sizov/oop_mmf/Task7/Test/right_side.dat</file>
+</qresource>
+</RCC>
